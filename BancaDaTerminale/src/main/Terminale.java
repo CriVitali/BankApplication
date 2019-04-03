@@ -1,10 +1,11 @@
 package main;
 
 import java.util.Scanner;
+import java.util.ArrayList; 
 
 public class Terminale {
 
-	public Utente[] arrayUtenti = new Utente[10];
+	public ArrayList<Utente> arrayUtenti = new ArrayList<Utente>();
 	public int IDUtenteCorrente;
 	public int IDUContoScelto;	
 	public int scelta, exitAdmin, exitClient, count;
@@ -31,33 +32,37 @@ public class Terminale {
 				case 1:
 				    
 					Scanner myObj2 = new Scanner(System.in);
-					System.out.println("Enter Name and Password: ");
-					
+					System.out.println("Enter Name and Password: ");					
 					String Name = myObj2.nextLine();
 					String Password = myObj2.nextLine(); 
 					
-					Utente user = new Utente( Name, Password );
-					arrayUtenti[count++] = user;
+					arrayUtenti.add( new Utente( Name, Password ) );
 					
 				break;
 				
 				case 2:
 			        
-					// scegliere Utente (da 1-n) e inizializzare nuovoConto
 					Scanner myObj3 = new Scanner(System.in);
+					mostraUtenti();
+					System.out.println("Scegliere l'utente (1-n): ");
+					int n = myObj3.nextInt();
 					System.out.println("Inserire saldo iniziale: ");
-					int valore = myObj3.nextInt();
-					// ContoCorrente nuovoConto = new ContoCorrente(valore)
-					// (Utente[n].aggiungiConto( nuovoConto )
+					float valore = myObj3.nextFloat(); 
+					
+					arrayUtenti.get(n).aggiungiConto(new ContoCorrente( valore ));
 					
 				break;
 					
 				case 3:
+					
 					mostraMenuCliente();
+					
 		 		break;
 			
 				case 4:
+					
 					exitAdmin = 1;
+					
 				break;
 			
 			} 
@@ -67,7 +72,6 @@ public class Terminale {
 	
 	public void mostraMenuCliente() {
 		
-		//valida utente
 		Scanner myObj0 = new Scanner(System.in);		
 		System.out.println("Inserisci Id utente: ");
 		IDUtenteCorrente = myObj0.nextInt();
@@ -131,5 +135,14 @@ public class Terminale {
 			} 
 		} 
 	} 
+	
+	public void mostraUtenti() {
+		
+		for( int i = 0; i < arrayUtenti.size(); i++ ) {
+			
+			System.out.println( "Utente " + i + ": " + arrayUtenti.get(i).IDUtente + " " + arrayUtenti.get(i).Nome);
+			
+		}
+	}
 	
 } 

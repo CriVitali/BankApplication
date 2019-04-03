@@ -1,12 +1,14 @@
 package main;
 
+import java.util.ArrayList;
+
 public class ContoCorrente {
 	
 	public int IDConto;
 	public static int numeroUltimoConto = 1000;	
 	public float saldo;
-	public int[] transazioniUtente = new int[10];
-	public int count, i;
+	public ArrayList<Integer> transazioniUtente = new ArrayList<Integer>();
+	public int count;
 	
 	public ContoCorrente(float saldo) {
 		
@@ -18,7 +20,7 @@ public class ContoCorrente {
 	public void deposita( int valore ) {
 		
 		this.saldo += valore;
-		transazioniUtente[count++] = valore;
+		transazioniUtente.add(valore);
 	}
 	
 	public void ritira( int valore ) {
@@ -26,7 +28,7 @@ public class ContoCorrente {
 		if( saldo >= valore ) {
 			
 			this.saldo -= valore;
-			transazioniUtente[count++] = -valore;
+			transazioniUtente.add(-valore);
 			
 		}else{
 			
@@ -41,11 +43,11 @@ public class ContoCorrente {
 	
 	public void mostraTransazioni() {
 		
-		for( i = 0; i < transazioniUtente.length; i++ ) {
+		for( int i = 0; i < transazioniUtente.size(); i++ ) {
 			
-			System.out.println( i+1 +"° transazione: " +  transazioniUtente[i]);
+			System.out.println( i+1 +"° transazione: " +  transazioniUtente.get(i));
 			
-		}	
+		}			
 	}
 }
 

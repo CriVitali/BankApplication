@@ -1,8 +1,10 @@
 package main;
 
+import java.util.ArrayList;
+
 public class Utente {
 	   
-	public ContoCorrente[] arrayConti = new ContoCorrente[5];
+	public ArrayList<ContoCorrente> arrayConti = new ArrayList<ContoCorrente>();
 	public String Nome;
 	public int IDUtente;
 	public String Password;
@@ -19,7 +21,7 @@ public class Utente {
 	
 	public void aggiungiConto( ContoCorrente nuovoConto ) {
 		
-		arrayConti[count++] = nuovoConto;
+		arrayConti.add(nuovoConto);
 	}
 	
 	public boolean validaPIN( String pass ) {
@@ -32,9 +34,10 @@ public class Utente {
 	
 	public void mostraConti() {
 		
-		while( arrayConti[i] != null ) {
+		for (ContoCorrente i : arrayConti) {
 			
-			System.out.println( "Id " + (i+1) + "° conto: " + arrayConti[i++].IDConto );
+		      System.out.println(i.IDConto);
+		      System.out.println(i.saldo);
 		}	
 	}	
 }
