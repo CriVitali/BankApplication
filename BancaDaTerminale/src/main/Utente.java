@@ -5,11 +5,10 @@ import java.util.ArrayList;
 public class Utente {
 	   
 	public ArrayList<ContoCorrente> arrayConti = new ArrayList<ContoCorrente>();
-	public String Nome;
-	public int IDUtente;
-	public String Password;
+	private String Nome;
+	private int IDUtente;
+	private String Password;
 	public static int numeroUltimoUtente = 10000;
-	public int count, i;
 	
 	public Utente(String Nome, String Password) {
 		
@@ -34,11 +33,23 @@ public class Utente {
 	
 	public void mostraConti() {
 		
-		for (ContoCorrente i : arrayConti) {
+		for( int i = 0; i < arrayConti.size(); i++ ) {
 			
-		      System.out.println(i.IDConto);
-		      System.out.println(i.saldo);
-		}	
+			System.out.println( (i+1) + " - ID CONTO: " + arrayConti.get(i).getIDConto() + " SALDO: " + arrayConti.get(i).getSaldo());
+			
+		}
 	}	
+	
+	public int getIDUtente(){
+		
+		return IDUtente;
+		
+	}
+	
+	public String getNome(){
+		
+		return Nome;
+		
+	}
 }
 

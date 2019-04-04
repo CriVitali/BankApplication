@@ -4,11 +4,10 @@ import java.util.ArrayList;
 
 public class ContoCorrente {
 	
-	public int IDConto;
+	private int IDConto;
 	public static int numeroUltimoConto = 1000;	
-	public float saldo;
-	public ArrayList<Integer> transazioniUtente = new ArrayList<Integer>();
-	public int count;
+	private float saldo;
+	private ArrayList<Integer> transazioniUtente = new ArrayList<Integer>();
 	
 	public ContoCorrente(float saldo) {
 		
@@ -35,19 +34,26 @@ public class ContoCorrente {
 			System.out.println("Non hai abbastanza credito");
 		}
 	}
-    
-	public void mostraSaldo() {
-		
-		System.out.println("Il saldo disponibile è: " + saldo );
-	}
-	
+    	
 	public void mostraTransazioni() {
 		
 		for( int i = 0; i < transazioniUtente.size(); i++ ) {
 			
-			System.out.println( i+1 +"° transazione: " +  transazioniUtente.get(i));
+			System.out.println("Transaz. "+ (i+1) + ": " + transazioniUtente.get(i));
 			
-		}			
+		}	
+		System.out.println("\n\n");
+	}
+	
+	public int getIDConto() {
+		
+		return IDConto;
+		
+	}	
+	
+	public float getSaldo() {
+		
+		return saldo;
 	}
 }
 

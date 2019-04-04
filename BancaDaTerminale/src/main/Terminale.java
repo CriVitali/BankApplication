@@ -5,51 +5,57 @@ import java.util.ArrayList;
 
 public class Terminale {
 
-	public ArrayList<Utente> arrayUtenti = new ArrayList<Utente>();
-	public int IDUtenteCorrente;
-	public int IDUContoScelto;	
-	public int scelta, exitAdmin, exitClient, count;
+	private ArrayList<Utente> arrayUtenti = new ArrayList<Utente>();
+	private Utente utenteCorrente;
+	private int IDUtenteCorrente;
+	private int exitAdmin, exitClient, autorizzato, n;
+	private String pass;
 	
 	
 	public void mostraMenuAdmin() {
+				
+		System.out.println("... MENU ADMIN ...\n -> premi 1-4\n");
 		
 		while( exitAdmin == 0 ) {
 			
-			Scanner myObj1 = new Scanner(System.in); 
+			Scanner scan1 = new Scanner(System.in); 
 			
 			System.out.println(
 					
-					 "1. Aggiungi utente\n"
-					+ "2. Aggiungi conto corrente\n"
-					+ "3. Apri menu cliente\n"
-					+ "4. Exit"
+					 " 1. Aggiungi utente\n"
+					+ " 2. Aggiungi conto corrente\n"
+					+ " 3. Apri menu cliente\n"
+					+ " 4. Exit"
 			);		
 			
-			int scelta = myObj1.nextInt();
+			int scelta = scan1.nextInt();
 			
 			switch(scelta) {
 			   
 				case 1:
 				    
-					Scanner myObj2 = new Scanner(System.in);
-					System.out.println("Enter Name and Password: ");					
-					String Name = myObj2.nextLine();
-					String Password = myObj2.nextLine(); 
+					Scanner scan2 = new Scanner(System.in);
+					System.out.println("Nome nuovo cliente: ");					
+					String Name = scan2.nextLine();
+					System.out.println("Password: ");
+					String Password = scan2.nextLine(); 
 					
 					arrayUtenti.add( new Utente( Name, Password ) );
+					System.out.println("\nUtente inserito!\n\n");
 					
 				break;
 				
 				case 2:
 			        
-					Scanner myObj3 = new Scanner(System.in);
+					Scanner scan3 = new Scanner(System.in);					
+					System.out.println("\nScegliere l'utente (1-n): ");
 					mostraUtenti();
-					System.out.println("Scegliere l'utente (1-n): ");
-					int n = myObj3.nextInt();
-					System.out.println("Inserire saldo iniziale: ");
-					float valore = myObj3.nextFloat(); 
+					int n = scan3.nextInt();
+					System.out.println("\nInserire saldo iniziale: ");
+					float valore = scan3.nextFloat(); 
 					
-					arrayUtenti.get(n).aggiungiConto(new ContoCorrente( valore ));
+					arrayUtenti.get(n-1).aggiungiConto(new ContoCorrente( valore ));
+					System.out.println("\nConto aggiunto!\n\n");
 					
 				break;
 					
@@ -72,64 +78,100 @@ public class Terminale {
 	
 	public void mostraMenuCliente() {
 		
-		Scanner myObj0 = new Scanner(System.in);		
-		System.out.println("Inserisci Id utente: ");
-		IDUtenteCorrente = myObj0.nextInt();
-		System.out.println("Inserisci Password: ");
-		String password = myObj0.nextLine();
-		// valida utente, se supera l autenticazione allora prosegui
+		System.out.println("\n\n... LOGIN CLIENTE ... ");
+				
+		Scanner scan4 = new Scanner(System.in);		
+		System.out.println("\nInserisci Id utente: ");
+		IDUtenteCorrente = scan4.nextInt();
+		System.out.println("\nInserisci Password: ");
+		Scanner scan5 = new Scanner(System.in);
+		pass = scan5.nextLine();
+
+		// ricerca utente, verifica identità, se supera l autenticazione 
 		// fai scegliere il conto su cui operare (IDUContoScelto)
-		
-		while( exitClient == 1 ) {
+		for ( Utente i : arrayUtenti ) {
 			
-			Scanner myObj1 = new Scanner(System.in); 			
+		      if( i.getIDUtente() == IDUtenteCorrente && i.validaPIN(pass)) {
+
+		    		  autorizzato = 1;
+		    		  System.out.println("\nAccesso Autorizzato!\n\n");	
+		    		  System.out.println("Scegli il conto su cui operare (1-n): ");
+		    		  i.mostraConti();	
+		    		  Scanner scan6 = new Scanner(System.in);
+		    		  n = scan6.nextInt();
+		    		  n = n-1;
+		    		  utenteCorrente = i;		    			
+   
+		      }        
+		}
+		
+		if( autorizzato == 0) {
+			
+			System.out.println("\nAccesso non autorizzato");
+			mostraMenuCliente();
+			
+		}
+	
+		while( exitClient == 0 && autorizzato == 1 ) {
+			
+			System.out.println("\n\n ... MENU CLIENTE ...\n  -> premi 1-5");
+			System.out.println("Utente corrente: " + utenteCorrente.getNome() );
+			System.out.println("Saldo: " + utenteCorrente.arrayConti.get(n).getSaldo());
+			Scanner scan7 = new Scanner(System.in); 			
 			System.out.println(
 					
-					"1. Deposita\n"
-					+ "2. Ritira\n"
-					+ "3. Mostra Saldo\n"
-					+ "4. Mostra Transazioni\n"
-					+ "5. Cambia Conto"  // scegli n-esimo conto. conti[n]
-					+ "6. Exit"
+					"\n 1. Deposita\n"
+					+ " 2. Ritira\n"
+					+ " 3. Mostra Transazioni\n"
+					+ " 4. Cambia Conto\n"  
+					+ " 5. Exit"
 			);		
 			
-			int scelta = myObj1.nextInt();
+			int scelta = scan7.nextInt();
 			
 			switch(scelta) {
 			   
 				case 1:
 				    
-					Scanner myObj2 = new Scanner(System.in);			
-					System.out.println("Inserisci valore da depositare");
-					int valore1 = myObj2.nextInt();		
-					//(conto di utente autenticato).deposita(valore)
+					Scanner scan8 = new Scanner(System.in);			
+					System.out.println("Inserisci valore da depositare: ");
+					int valore1 = scan8.nextInt();
+					utenteCorrente.arrayConti.get(n).deposita(valore1); 				
 					
 				break;
 				
 				case 2:
 			
-					Scanner myObj3 = new Scanner(System.in);			
+					Scanner scan9 = new Scanner(System.in);			
 					System.out.println("Inserisci valore da ritirare: ");
-					int valore2 = myObj3.nextInt();
-					//(conto di utente autenticato).ritira(valore)
+					int valore2 = scan9.nextInt();
+					utenteCorrente.arrayConti.get(n).ritira(valore2);
 					
-				break;
-					
+				break;					
+			
 				case 3:
-					//(conto di utente autenticato).mostraSaldo()
-				break;
-				
-				case 4:
-					//(conto di utente autenticato).mostraTransazioni()
+					
+					utenteCorrente.arrayConti.get(n).mostraTransazioni();
+					
 				break;
 			
-				case 5:
+				case 4:
+					
 					// Visualizza conti, richiedi quale scegliere 1-n?
-					// il conto su cui operare sara' arrayConti[n]
+
+					utenteCorrente.mostraConti();  
+		    		System.out.println("Scegli il conto su cui operare (1-n): ");
+		    		Scanner scan10 = new Scanner(System.in);		
+		    		n = scan10.nextInt();
+		    		n = n-1;
+		    		System.out.println("Hai scelto: " + utenteCorrente.arrayConti.get(n).getIDConto() );
+		    			    		  
 				break;
 				
-				case 6:
+				case 5:
+					
 					exitClient = 1;
+					
 				break;
 				
 			} 
@@ -140,7 +182,7 @@ public class Terminale {
 		
 		for( int i = 0; i < arrayUtenti.size(); i++ ) {
 			
-			System.out.println( "Utente " + i + ": " + arrayUtenti.get(i).IDUtente + " " + arrayUtenti.get(i).Nome);
+			System.out.println( (i+1)+ "-   ID:" + arrayUtenti.get(i).getIDUtente() + "  NOME:" + arrayUtenti.get(i).getNome());
 			
 		}
 	}
